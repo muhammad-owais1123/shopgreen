@@ -1,0 +1,505 @@
+<!-- Filename: index.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Responsive Homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    
+    <style>
+        /* General styles for the search form */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+            margin-top:-30px;
+            position: relative;
+        }
+    
+        /* Styling the search bar */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            width: 50%; /* Enlarges the search bar */
+            position: relative;
+        }
+    
+        .search-wrapper input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 45px;
+            outline: none;
+        }
+    
+        /* Styling the search icon */
+        .search-icon {
+            background: none;
+            position: absolute;
+            right: 0px;
+            background-color:white;
+        }
+        .search-icon:hover {
+        filter: drop-shadow(0px 0px 20px rgb(117,158,76)); /* Green glow effect */
+        background-color: #333; /* Dark background on hover */
+        color: #fff; /* Change icon color */
+        border-color: #333; /* Darker border color */
+        }
+    
+        /* Suggestions container styling */
+        .suggestions {
+            display: flex;
+            flex-direction: column; /* Arrange suggestions in a column */
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 40px 40px 40px 40px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 100%; /* Position below the search bar */
+            left: 0;
+            z-index: 10;
+        }
+    
+        /* Styling individual suggestion items */
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+    
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+    
+        .suggestion-item:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <div class="homepage">
+    <form method="get" action="{% url 'green_app:search_product' %}" class="search-form">
+        <div class="search-wrapper">
+            <input type="text" name="term" placeholder="Search...">
+            
+            <button type="submit" class="search-icon" >
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+    
+    
+    
+        <style>
+            .alert {
+              padding: 15px;
+              margin-top: 10px;
+              margin-bottom: 20px;
+              border: 1px solid transparent;
+              border-radius: 4px;
+              position: relative;
+              opacity: 1;
+              transition: opacity 0.5s ease-out;
+              text-align:center;
+            }
+            .alert-success {
+              color: #3c763d;
+              background-color: #dff0d8;
+              border-color: #d6e9c6;
+            }
+            .alert-error {
+              color: #a94442;
+              background-color: #f2dede;
+              border-color: #ebccd1;
+            }
+            .alert-hidden {
+              opacity: 0;
+            }
+          </style>
+    
+    
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+        <style>
+            .messages{
+                margin-bottom:-50px;
+            }
+        </style>
+
+    <section class="feature-section">
+        <div class="feature-text">
+            <h4>Shop with Confidence</h4>
+            <h1>
+                <span class="typing-text">Discover the Shop Green</span>
+            </h1>
+            
+            <style>
+            .typing-text {
+                display: inline-block;
+                overflow: hidden; /* Hides the text that overflows during the animation */
+                white-space: nowrap; /* Prevents the text from wrapping to the next line */
+                font-family: monospace; /* Optional: gives a typewriter feel */
+                font-size: 24px; /* Adjust the size as needed */
+                border-right: 3px solid black; /* Creates a cursor effect at the end of the text */
+                animation: typing 3s steps(23, end), blink-caret 0.5s step-end 4s; /* Typing and blinking caret animation */
+                color:rgb(117,158,76); 
+            }
+            
+            @keyframes typing {
+                from { width: 0; } /* Start with no text visible */
+                to { width: 25%; } /* Reveal the entire text */
+            }
+            
+            @keyframes blink-caret {
+                from, to { border-color: transparent; } /* Invisible caret */
+                50% { border-color: black; } /* Visible caret */
+            }
+            </style>
+            <p>Shop Green is an online destination dedicated to enhancing your space with
+                nature's touch. We offer a curated selection of vibrant plants, stylish planters,
+                including fiberglass designs, elegant ceramic containers, and charming mugs.</p>
+            <div class="buttons">
+                <a href="{% url 'green_app:allproducts' %}"><button class="explore-btn">All Products</button></a>
+                
+                <button class="learn-more-btn">Newest></button>
+            </div>
+            <style>
+                /* Container for buttons */
+                .buttons {
+                    display: flex;
+                    flex-wrap: wrap; /* Allow buttons to wrap onto the next line if necessary */
+                    justify-content: center; /* Center buttons horizontally */
+                    gap: 10px; /* Adjust spacing between buttons */
+                }
+
+                /* Initial state with transition for background-color and transform */
+                .explore-btn, .learn-more-btn {
+                    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+                    background-color: #ffffff; /* Initial background color */
+                    transform: translateX(0) rotate(0deg);
+                    /* Ensure buttons fit within the viewport */
+                    max-width: 150px; /* Set a max width to prevent buttons from becoming too large */
+                    width: 100%; /* Allow buttons to stretch to full width on smaller screens */
+                    box-sizing: border-box; /* Include padding and border in the element’s total width and height */
+                    flex: 1 1 150px; /* Flex basis with a minimum width to ensure buttons do not get too small */
+                }
+
+                /* Use media queries to handle different screen sizes */
+                @media (max-width: 600px) {
+                    .animate-transform-background, .animate-transform-background_ {
+                        transform: translateX(0) rotate(180deg); /* Adjust for smaller screens */
+                    }
+                    .flip-twice, .flip-twice_ {
+                        transform: translateX(0) rotate(360deg); /* Adjust for smaller screens */
+                    }
+                }
+
+                /* Class to trigger the initial flip and background color change */
+                .animate-transform-background {
+                    transform: translateX(0) rotate(180deg); /* Adjusted for smaller screens */
+                    background-color: #ADB5C7;
+                }
+                .animate-transform-background_ {
+                    transform: translateX(0) rotate(180deg); /* Adjusted for smaller screens */
+                    background-color: #ADB5C7;
+                }
+
+                /* Class to flip the element back and darken the background color */
+                .flip-twice {
+                    transform: translateX(0) rotate(360deg); /* Adjusted for smaller screens */
+                }
+                .flip-twice_ {
+                    transform: translateX(0) rotate(360deg); /* Adjusted for smaller screens */
+                }
+
+                /* Class to darken the background color after the second transition */
+                .darkening-background {
+                    transition: background-color 1s ease-in-out;
+                    background-color: #6c757d; /* Final darkened color */
+                }
+
+            </style>
+        </div>
+    </div></div>
+        <!--<div class="feature-images">
+            <img class="medium-img" src="https://via.placeholder.com/200" alt="Placeholder Image 2">
+            <img class="small-img" src="https://via.placeholder.com/150" alt="Placeholder Image 3">
+        </div>-->
+    </section>
+
+    <section class="image-grid">
+            {% for i in selected_category %}
+            {% if i and i.category%}
+                <div class="image-card"> 
+                <a href="{% url 'green_app:subcategory' i.category.name %}">
+                <img src="{{ i.category.image.url }}" alt="{{ i.category.name }}">
+                
+                <style>
+                    .image-card img, img{
+                        border: 4px solid rgb(117,158,76);
+                        border-radius: 35px;
+                        color:rgb(117,158,76) !important; 
+                        transition:0.3s ease;
+                    }
+                    img{
+                        border: 4px solid rgb(117,158,76);
+                        border-radius: 65px;
+                        color:rgb(117,158,76) !important; 
+  
+                    }
+                </style>
+                
+                <p class="caption">{{ i.category.name }}</p>
+                <style>
+                    .caption{
+                        font-weight: bold;
+                        color:rgb(117,158,76) !important; 
+  
+                    }
+                </style>
+                </a>
+                <style>
+                    .image-card img:hover{
+                        transform:scale(1.1); 
+  
+                    }
+                </style>
+                </div>
+            {% else %}
+                <p>No category selected.</p>
+            {% endif %}
+            {% endfor %}
+        
+        
+    </section>
+
+    
+
+    <section class="newest-arrivals">
+        <h2 class="newest">Newest Arrivals</h2>
+        <style>
+            .newest {
+                transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+                /* Initial state */
+                text-align: left;
+                color:rgb(117,158,76); 
+            }
+            .newest.active {
+                transform: translateX(41%); /* Transformed state */
+            }
+            @media (max-width:600px) {
+                .newest.active {
+                transform: translateX(16%); /* Transformed state */
+            }
+            }
+            
+        </style>
+        <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const heading = document.querySelector('.newest');
+
+        // Create an Intersection Observer instance
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add the 'active' class when the heading is in view
+                    entry.target.classList.add('active');
+                    // Optionally, unobserve the element after animation
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.9 // Adjust this value if needed
+        });
+
+        // Start observing the heading element
+        observer.observe(heading);
+    });
+</script>
+        
+        <div class="slider">
+            <div class="slides">
+                {% for k in newest|slice:":4" %}
+                    
+                    {% if forloop.counter0|divisibleby:4 %}
+                    <div class="slide"> <!-- Start a new slide every 4 items -->
+                    {% endif %}
+                    
+                        {% for i in newest %}
+                            {% if i%}
+                                <div class="card"><!-- for every element -->
+                                    <!-- Filename: index.html -->
+                                    
+                                    {% if i.product.product.name %}
+                                    <a href="{% url 'green_app:productdetails' i.product.product.name %}"><img src="{{ i.product.image.url }}" alt="{{i.product.product.name}}"><h3>{{i.product.product.name}}</h3></a>
+                                    {%endif%} 
+                                    <p>{{i.product.product.rating}}/5   |
+                                     {{i.product.price}}
+                                     </p>
+                                    {% if i.product.product.name %}
+                                        <a href="{% url 'green_app:productdetails' i.product.product.name %}">Learn More ></a>
+                                    {% else %}
+                                        <p>No product details available</p>
+                                    {% endif %}
+                                </div>    
+                            {% else %}
+                                <p>OOPS</p>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    {% if forloop.counter|divisibleby:4 or forloop.last %}
+                    </div> <!-- Close the slides div after every 4 items or at the end -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <style>
+        .card a{
+            transition: 0.4s ease;
+        }
+        .card a:hover{
+            transform: scale(0.9);
+            color:green;
+            font-weight: bold;
+        }
+    </style>
+
+    <section class="about-us">
+        <div class="about-us-container">
+            <h4>About Us</h4>
+            <h1>What is Shop Green</h1>
+            <style>
+                h1{
+                    color:rgb(117,158,76); 
+                }
+            </style>
+            <p>At Shop Green, our mission is to enrich your living spaces with high-quality,
+                sustainable, and beautifully designed plants, planters, and home décor. We are
+                dedicated to offering a curated selection of products that blend style,
+                functionality, and environmental responsibility. Our goal is to inspire and
+                support a greener lifestyle, making it easy for our customers to cultivate their
+                own vibrant, eco-friendly environments. Through exceptional customer service
+                and a commitment to innovation, we strive to be your trusted partner in
+                creating and enjoying a more sustainable and aesthetically pleasing home.</p>
+        </div>
+    </section>
+    
+    <section class="subscribe-section">
+        <div class="subscribe-container">
+            <h2>Subscribe Us For Gifts And Offers</h2>
+            <style>
+                h2{
+                    color:rgb(117,158,76); 
+                    font-weight: 700;
+                }
+            </style>
+            <form class="email-form" method="POST" action="{% url 'green_app:subscribe' %}">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+                <style>
+                    .email-form button{
+                        background-color: rgb(117,158,76)
+                    }
+                </style>
+            </form>
+        </div>
+    </section>
+    
+    
+</main>
+<script src="{% static 'home.js' %}"></script>
+<script>
+    // Function to hide messages after 5 seconds
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.classList.add('alert-hidden');
+        });
+    }, 5000);
+
+    document.querySelector(".learn-more-btn").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevents the default action of the link
+        document.querySelector(".newest-arrivals").scrollIntoView({ 
+            behavior: 'smooth' 
+        });
+    });
+  </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.querySelector('input[type="text"]');
+        const searchWrapper = document.querySelector('.search-wrapper');
+
+        input.addEventListener('keyup', function() {
+            const query = input.value.trim();
+
+            if (query.length > 0) {
+                fetchSuggestions(query);
+            } else {
+                removeSuggestions();
+            }
+        });
+
+        function fetchSuggestions(query) {
+            fetch(`/suggestions/?term=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySuggestions(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                });
+        }
+
+        function displaySuggestions(data) {
+            removeSuggestions(); // Clear any existing suggestions
+        
+            if (data.length > 0) {
+                const suggestionsDiv = document.createElement('div');
+                suggestionsDiv.classList.add('suggestions');
+        
+                data.forEach(item => {
+                    const suggestionItem = document.createElement('a');
+                    suggestionItem.classList.add('suggestion-item');
+                    suggestionItem.href = `/productdetails/${item.name}`; // Link to product detail page with product ID
+                    suggestionItem.textContent = item.name;
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+        
+                searchWrapper.appendChild(suggestionsDiv);
+            }
+        }
+        
+
+        function removeSuggestions() {
+            const existingSuggestions = document.querySelector('.suggestions');
+            if (existingSuggestions) {
+                existingSuggestions.remove();
+            }
+        }
+
+        // Hide suggestions when clicking outside the search box
+        document.addEventListener('click', function(e) {
+            if (!searchWrapper.contains(e.target)) {
+                removeSuggestions();
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}
+

@@ -1,0 +1,242 @@
+<!-- Filename: dashboard.html -->
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile">
+                <h3>{{profile.full_name}}</h3>
+                <p>{{profile.user.username}}</p>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li class="active"><a href="#" onmouseover="hoverTab('dashboard')" onclick="openTab('dashboard')"><i class="icon"></i> Personal Details</a></li>
+                    <li><a href="#" onmouseover="hoverTab('statistics')" onclick="openTab('statistics')"><i class="icon"></i> Delivered Orders</a></li>
+                    <li><a href="#" onmouseover="hoverTab('statistics1')" onclick="openTab('statistics1')"><i class="icon"></i> Pending Orders</a></li>
+                    <li><a href="{% url 'green_app:wishlistparam' %}" ><i class="icon"></i> WishList</a></li>
+                    <li><a href="{% url 'green_app:cartpage' %}" ><i class="icon"></i> Cart</a></li>
+                    <li><a href="{% url 'green_app:home' %}" ><i class="icon"></i> HomePage</a></li>
+                    <li><a href="{% url 'green_app:logout' %}" ><i class="icon"></i> LogOut</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="dashboard">
+            <div id="dashboard" class="tab-content active">
+                <h1>Personal Information</h1>
+                <div class="personal-info">
+                    <p><strong>Name:</strong> {{profile.full_name}}</p>
+                    <p><strong>UserName:</strong> {{profile.user.username}}</p>
+                    
+                    <form method="post" action="{% url 'green_app:update_profile' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email"><strong>Email:</strong></label>
+                            <input type="email" id="email" name="email" value="{{ profile.email }}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><strong>Phone:</strong></label>
+                            <input type="tel" id="contact" name="contact" value="{{ profile.contact }}" >
+                        </div>
+                        <div class="form-group">
+                            <label for="address"><strong>Address:</strong></label>
+                            <input type="text" id="address" name="address" value="{{ profile.address }}" >
+                        </div>
+                        <button type="submit" class="update-button">Update</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+            <div id="statistics" class="tab-content">
+                <h1>Delivered Order</h1>
+               
+                <div class="order-details">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment Method</th>
+                                <th>Gift</th>
+                                
+                                <th>Details</th>
+                                <th>Total</th>
+                                <th>Payment Proof</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for i in order %}
+                            {% if i.status == "Delivered" or i.status == "delivered" %}
+                            <tr>
+                                <td>
+                                <p>{{i.placedAt}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.paymentMethod}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.gift}}</p>
+                                </td>
+                                <td>
+                                    {% for j in i.orderItems.items.all %}
+                                    <p>{{j}}</p>
+                                    
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{i.grandTotal}}
+                                </td>
+                                <td>
+                                    {% if i.paymentProof %}
+                                    <p><a href="{{ i.paymentProof.url }}" target="_blank">Payment Proof</a></p>
+                                    {% elif i.paymentMethod == "Cod" or i.paymentMethod == "COD"%}
+                                        <p>-</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                           
+                            {%endif%}
+                            {% endfor %}
+                            
+                              
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="statistics1" class="tab-content">
+                <p class="warn"><strong>1.</strong> Be patient, it takes time to receive/confirm ONLINE payment and within 24 hours,your order will be moved from PENDING to PAYMENT RECEIVED orders.</p>
+                <p class="warn"><strong>2.</strong> Payment proof i only needed in ONLNE payment method.</p>
+
+                <style>
+                .tab-content .warn{
+                    text-align: center;
+                    font-style: italic;
+                    font-size: large;
+                }
+             </style>  
+                <h1>Payment Due Orders</h1>
+               
+                <div class="order-details">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment Method</th>
+                                <th>Gift</th>
+                                
+                                <th>Details</th>
+                                <th>Total</th>
+                                <th>Payment Proof</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in order %}
+                            {% if i.status == "inprogress" or i.status == "Inprogress" %}
+                            {% if i.paymentStatus == "pending" or i.paymentStatus == "Pending" or i.paymentStatus == "COD" or i.paymentStatus == "cod" %}
+                           
+                            <tr>
+                                <td>
+                                <p>{{i.placedAt}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.paymentMethod}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.gift}}</p>
+                                </td>
+                                <td>
+                                    {% for j in i.orderItems.items.all %}
+                                    <p>{{j}}</p>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{i.grandTotal}}
+                                </td>
+                                <td>
+                                    {% if i.paymentProof %}
+                                    <p><a href="{{ i.paymentProof.url }}" target="_blank">Payment Proof</a></p>
+                                    {% elif i.paymentMethod == "Cod" or i.paymentMethod == "COD"%}
+                                        <p>Not Required</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                           
+                            {%endif%}
+                            {%endif%}
+                            {% endfor %}
+                            
+                              
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PAID ORDERS -->
+                <h1>Payment Received Orders</h1>
+                <div class="order-details">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment Method</th>
+                                <th>Gift</th>
+                                
+                                <th>Details</th>
+                                <th>Total</th>
+                                <th>Payment Proof</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in order %}
+                            {% if i.status == "inprogress" or i.status == "Inprogress" %}
+                            {% if i.paymentStatus == "paid" or i.paymentStatus == "Paid" %}
+                            <tr>
+                                <td>
+                                <p>{{i.placedAt}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.paymentMethod}}</p>
+                                </td>
+                                <td>
+                                    <p>{{i.gift}}</p>
+                                </td>
+                                <td>
+                                    {% for j in i.orderItems.items.all %}
+                                    <p>{{j}}</p>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{i.grandTotal}}
+                                </td>
+                                <td>
+                                    {% if i.paymentProof %}
+                                    <p><a href="{{ i.paymentProof.url }}" target="_blank">Payment Proof</a></p>
+                                    {% elif i.paymentMethod == "Cod" or i.paymentMethod == "COD"%}
+                                        <p>-</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                           
+                            {%endif%}
+                            {%endif%}
+                            {% endfor %}
+                            
+                              
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+    <script src="{% static 'dashboard.js' %}"></script>
+</body>
+{% endblock %}

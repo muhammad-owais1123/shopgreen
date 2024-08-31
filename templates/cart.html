@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cart{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+    
+    <style>
+        .alert {
+          padding: 15px;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          border: 1px solid transparent;
+          border-radius: 4px;
+          position: relative;
+          opacity: 1;
+          transition: opacity 0.5s ease-out;
+          text-align:center;
+        }
+        .alert-success {
+          color: #3c763d;
+          background-color: #dff0d8;
+          border-color: #d6e9c6;
+        }
+        .alert-error {
+          color: #a94442;
+          background-color: #f2dede;
+          border-color: #ebccd1;
+        }
+        .alert-hidden {
+          opacity: 0;
+        }
+      </style>
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+  <h1 class="heart"><i class="fas fa-shopping-cart"></i> My cart</h1>
+        <style>
+            .heart {
+              margin-top: 0%;
+                transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+                /* Initial state */
+                text-align: left;
+                color:rgb(117, 158, 76);
+            }
+            .heart.active {
+                transform: translateX(45%); /* Transformed state */
+            }
+            @media (max-width:600px) {
+                .heart.active {
+                transform: translateX(35%); /* Transformed state */
+            }
+            }
+            
+        </style>
+        <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const heading = document.querySelector('.heart');
+  
+        // Create an Intersection Observer instance
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add the 'active' class when the heading is in view
+                    entry.target.classList.add('active');
+                    // Optionally, unobserve the element after animation
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.9 // Adjust this value if needed
+        });
+  
+        // Start observing the heading element
+        observer.observe(heading);
+    });
+  </script>
+    <main>
+        
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Image</th>
+                        <th>Product name</th>
+                        <th>Width</th>
+                        <th>Height</th>
+                        <th>Color</th>
+                        <th>Gloss</th>
+                        <th>Drainage</th>
+                        <th>Unit price</th>
+                        <th>Quantity</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in cart.items.all %}
+                        
+                        <tr>
+                            <td></td>
+                            <td data-label="Image:"><img src="{{i.prodInfo.image.url}}" alt="Product Image">
+                            </td>
+                            <td data-label="Name:">
+                                <span>{{i.prodInfo.product.name}}</span>
+                            </td>
+                            
+                            <td data-label="Width:">{{i.prodInfo.product.width}}</td> <!-- Size column -->
+                            <td data-label="Height:">{{i.prodInfo.product.height}}</td>
+                            <td data-label="Color:">{{i.color}}</td> <!-- Color column -->
+                            <td data-label="Gloss:">{{i.gloss}}</td> <!-- Color column -->
+                            <td data-label="Drainage:">{{i.drainage}}</td> <!-- Color column -->
+                            <td data-label="Price:">{{i.prodInfo.price}}</td>
+                            <td>
+                                <form id =updateQtyForm method="post" action="{% url 'green_app:update_qty' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{ i.id }}">
+                                    <input type="number" name="quantity" value="{{ i.quantity }}" min="1">
+                                    
+                                </form>
+                                
+                            </td>
+                            <td>
+                                <button class="add-to-wishlist-button" data-item-id="{{ i.id }}" data-prodname="{{ i.prodInfo.product.name }}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="remove-from-cart-button" data-item-id="{{ i.id }}">
+                                    <i class="fas fa-cancel"></i>
+                                </button>
+                            </td>
+                            
+                        </tr>
+                    {% endfor %}
+                   
+                </tbody>
+            </table>
+            <div class="gift-info">You want them wrapped up like a gift? (Costs Rs {{fishNchips.giftwrap}}/- only)</div>
+            <form id="placeOrderForm" method="post" action="{% url 'green_app:place_order' %}">
+                {% csrf_token %}
+                
+                <label>
+                    <input type="radio" name="response" value="yes" required>
+                    Yes
+                </label>
+                <label>
+                    <input type="radio" name="response" value="no">
+                    No
+                </label>
+        
+                <!-- Use button with type="button" to prevent default form submission -->
+                <button type="button" class="purchase-button" id="submitButton" action="{% url 'green_app:place_order' %}">
+                    CheckOut
+                </button>
+            </form>
+            <button class="purchase-button" onclick="location.href='{% url 'green_app:home' %}'">
+                Continue Shopping
+            </button>
+
+            <script>
+                document.getElementById('submitButton').addEventListener('click', function() {
+                    // Submit the first form using AJAX
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', document.getElementById('updateQtyForm').action, true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            // After successfully submitting the first form, submit the second form
+                            document.getElementById('placeOrderForm').submit();
+                        } else {
+                            // Handle error if the first form submission fails
+                            console.error('An error occurred while submitting the first form.');
+                        }
+                    };
+                    
+                    // Serialize the form data and send it
+                    var formData = new FormData(document.getElementById('updateQtyForm'));
+                    var encodedData = new URLSearchParams(formData).toString();
+                    xhr.send(encodedData);
+                });
+            </script>
+            <script>
+                document.getElementById('submitButton').addEventListener('click', function(event) {
+                    // Prevent default action of the button
+                    event.preventDefault();
+        
+                    // Check if a radio button is selected
+                    if (document.querySelector('input[name="response"]:checked')) {
+                        // Submit the form
+                        document.getElementById('myForm').submit();
+                    } else {
+                        // Alert user to select an option
+                        alert('Please select an option before proceeding.');
+                    }
+                });
+            </script>
+             <style>
+                .gift-info {
+                    margin-top: 10px;
+                    font-size: 14px;
+                    color: #555;
+                    font-style: italic;
+                  }
+            </style>
+
+        </div>
+
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-button');
+            const removeFromCartButtons = document.querySelectorAll('.remove-from-cart-button');
+        
+            addToWishlistButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item-id');
+                    const prodname = encodeURIComponent(this.getAttribute('data-prodname')); // Encode the product name
+                    
+                    fetch('/addtowishlist_viacart/'+prodname, { // Ensure URL is correct
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCsrfToken() // Include CSRF token if using Django
+                        },
+                        body: JSON.stringify({ item_id: itemId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            console.log(`Item added to wishlist`);
+                            alert(`Item added to wishlist`); // Show a message to the user
+                            window.location.href = '/wishlistparam'; // Redirect to the wishlist page
+                        } else {
+                            console.error('Failed to add item to wishlist:', data.reason);
+                            alert('Failed to add item to wishlist: ' + data.reason);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding the item to the wishlist.');
+                    });
+                });
+            });
+        
+            function getCsrfToken() {
+                const name = 'csrftoken';
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                return '';
+            }
+        
+        
+            removeFromCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item-id');
+                    
+                    fetch('/remove-from-cart/', { // Adjust the URL as necessary
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCsrfToken() // Include CSRF token if using Django
+                        },
+                        body: JSON.stringify({ item_id: itemId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.closest('tr').remove();
+                            console.log(`Item ${itemId} removed from cart`);
+                        } else {
+                            console.error('Failed to remove item from cart');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+        
+            function getCsrfToken() {
+                const name = 'csrftoken';
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                return '';
+            }
+        });
+        
+        
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="{% static 'cart.js' %}"></script>
+</body>
+{% endblock %}

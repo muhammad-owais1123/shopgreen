@@ -1,0 +1,95 @@
+<!-- index.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            
+            <style>
+                .welcome-section 
+                {
+                    background-image: 
+                          url('media/IMG-20240827-WA0018 (5).png'); /* Background image */
+                    background-size: cover; /* Ensures the image covers the entire section */
+                    background-position: center; /* Centers the background image */
+                    background-repeat: no-repeat; /* Prevents the image from repeating */
+                     /* Lightens the background image */
+                    color: black; /* Makes the text color black for better contrast */
+                    text-align: center; /* Centers the text horizontally */
+                    padding: 100px; /* Adds padding for better text spacing */
+                }
+
+                .welcome-section h1 {
+                    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* Adds a subtle light shadow to the text */
+                    margin-top: 60px;
+                    margin-left: 70px;
+                    color:rgb(46, 78, 13);
+                }
+            </style>
+            <h1 class="hh">ShopGreen</h1>
+        </div>
+        <div class="form-section">
+            <h2>Sign Up</h2>
+            <style>
+                h2{
+                    color:rgb(125, 179, 67);
+                }
+            </style>
+            <form method="POST">
+            <!-- Error display section -->
+            {% if form.errors %}
+            <div class="error">
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+            {% csrf_token %}
+                <div class="input-group double">
+                    <div class="field">
+                        {{form.full_name.label}} {{form.full_name}}
+                    </div>
+                    <div class="field">
+                        {{form.username.label}}  {{form.username}}
+                    </div>
+                </div>
+                <div class="input-group double">
+                    <div class="field">
+                        {{form.password1.label}}  {{form.password1}}
+                    </div>
+                    <div class="field">
+                        Confirm Pass  {{form.password2}}
+                    </div>
+                </div>
+                <div class="input-group double">
+                    <div class="field">
+                        {{form.email.label}}  {{form.email}}
+                    </div>
+                    <div class="field">
+                        {{form.contact.label}}  {{form.contact}}
+                    </div>
+                </div>
+                <div class="input-group">
+                    {{form.address.label}}  {{form.address}}
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+                <div class="signup-option">
+                    <span>Already have an account? <a href="{% url 'green_app:login' %}">Login</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'signup.js' %}"></script>
+</body>
+</html>

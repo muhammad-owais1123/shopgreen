@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load maths %}
+{% block title %}Checkout{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+  {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+  <main class="checkout-container">
+    <section class="order-details">
+      <div class="header">
+        <h1 class="heart">Your Order</h1>
+        <style>
+            .heart {
+                position:relative;
+              margin-top: 0%;
+                transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+                /* Initial state */
+                text-align: left;
+                color:rgb(117,158,76)
+            }
+            .heart.active {
+                transform: translateX(42%); /* Transformed state */
+            }
+            @media (max-width:600px) {
+                .heart.active {
+                transform: translateX(30%); /* Transformed state */
+            }
+            }
+            
+        </style>
+        <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const heading = document.querySelector('.heart');
+    
+        // Create an Intersection Observer instance
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add the 'active' class when the heading is in view
+                    entry.target.classList.add('active');
+                    // Optionally, unobserve the element after animation
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.9 // Adjust this value if needed
+        });
+    
+        // Start observing the heading element
+        observer.observe(heading);
+    });
+    </script>
+      </div>
+      <div class="items">
+        {% for i in cart.items.all %}
+        <div class="item">
+          <img src="{{i.prodInfo.image.url}}" alt="Product Image">
+          <style>
+            .item img{
+              width:20%;
+              height:20%;
+            }
+          </style>
+          <div class="details">
+            <h3>{{i.prodInfo.product.name}}</h3>
+            <p>{{i.prodInfo.product.size}}  {{i.color}}  {{i.drainage}} {{i.gloss}} {{i.quantity}}</p>
+          </div>
+          <span class="price">{{i.prodInfo.price}}*{{i.quantity}}={% multiply i.prodInfo.price  i.quantity as prodPrice %}{{prodPrice}}</span>
+          
+        </div>
+        {%endfor%}
+      </div>
+      
+    </section>
+    <section class="shipping-details">
+      <h1 class="hearts">Checkout</h1>
+    <style>
+        .hearts {
+            position:relative;
+          margin-top: 0%;
+            /* Initial state */
+            text-align: left;
+            transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+           
+            color:rgb(117,158,76)
+        }
+        .hearts.active {
+            transform: translateX(35%); /* Transformed state */
+        }
+        @media (max-width:600px) {
+            .hearts.active {
+            transform: translateX(22%); /* Transformed state */
+        }
+        }
+        
+    </style>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const heading = document.querySelector('.hearts');
+
+    // Create an Intersection Observer instance
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add the 'active' class when the heading is in view
+                entry.target.classList.add('active');
+                // Optionally, unobserve the element after animation
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.9 // Adjust this value if needed
+    });
+
+    // Start observing the heading element
+    observer.observe(heading);
+});
+</script>
+      <div>
+        <h1 class="heartss">Shipping Details</h1>
+    <style>
+        .heartss {
+            position:relative;
+          margin-top: 0%;
+            transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+            /* Initial state */
+            text-align: left;
+
+            color:rgb(117,158,76)
+        }
+        
+        
+    </style>
+    
+        <p>{{prof.full_name}}</p>
+        <p>{{prof.address}}</p>
+        <p>{{prof.contact}}</p>
+        <p>{{prof.email}}</p>
+      </div>
+      <div class="summary">
+        <p>Subtotal <span>{{total_price}}</span></p>
+        <p>Shipping <span>{{fishNchips.shipping}}</span></p>
+        {% if order_details.gift == "Yes" or order_details.gift == "yes" %}
+          <p>Gift <span>{{fishNchips.giftwrap}}</span></p>
+          {% add total_price fishNchips.giftwrap  as grandTotal1%}
+        {%else%}
+          <p>Gift <span>0</span></p>
+          {% add total_price 0  as grandTotal1%}
+        {%endif%}
+        {% add grandTotal1 fishNchips.shipping  as grandTotal%}
+        <p><strong>Total</strong> <span><strong>{{grandTotal}}</strong></span></p>
+        <div class="section payment-details">
+          <h1 class="heart1">Payment Methods</h1>
+    <style>
+        .heart1 {
+            position:relative;
+          margin-top: 0%;
+            transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+            /* Initial state */
+            text-align: left;
+            margin-bottom:30px;
+            color:rgb(117,158,76)
+        }
+        
+        
+    </style>
+    
+          <div class="payment-icons">
+            <style>
+              .payment-icons {
+                  display: flex;
+                  gap: 20px;
+                  align-items: center;
+                  position: relative;
+                  color:rgb(117,158,76);
+              }
+      
+              .payment-icons i {
+                  font-size: 24px;
+                  cursor: pointer;
+                  position: relative;
+              }
+      
+              /* Tooltip container */
+              .tooltip {
+                  position: absolute;
+                  bottom: 120%; /* Position the tooltip above the icon */
+                  left: 50%;
+                  transform: translateX(-50%);
+                  background-color: #333;
+                  color: #fff;
+                  text-align: center;
+                  padding: 5px;
+                  border-radius: 5px;
+                  width: max-content;
+                  visibility: hidden;
+                  opacity: 0;
+                  transition: opacity 0.3s;
+                  z-index: 1;
+              }
+      
+              /* Tooltip arrow */
+              .tooltip::after {
+                  content: '';
+                  position: absolute;
+                  top: 100%; /* Arrow points downward */
+                  left: 50%;
+                  margin-left: -5px;
+                  border-width: 5px;
+                  border-style: solid;
+                  border-color: #333 transparent transparent transparent;
+              }
+      
+              /* Show the tooltip text when you hover over the icon */
+              .payment-icons i:hover .tooltip {
+                  visibility: visible;
+                  opacity: 1;
+              }
+      
+              .copyable {
+                  cursor: pointer;
+              }
+          </style>
+            <i class="fas fa-wallet" title="JazzCash">
+            <div class="tooltip">
+                <span class="copyable" onclick="copyText(this)">UserName:  {{fishNchips.paymentName}} (Shop Green)</span><br>
+                <span class="copyable" onclick="copyText(this)">Phone No:  {{fishNchips.paymentNumber}}</span>
+            </div>
+            </i>
+         
+            <i class="fab fa-cc-visa" title="EasyPaisa">
+              <div class="tooltip">
+                <span class="copyable" onclick="copyText(this)">Username: {{fishNchips.paymentName}}</span><br>
+                <span class="copyable" onclick="copyText(this)">Phone: {{fishNchips.paymentNumber}}</span>
+            </div>
+            </i>
+            </i>
+            <i class="fab fa-credit-card" title="SadaPay">
+              <div class="tooltip">
+                <span class="copyable" onclick="copyText(this)">Username: {{fishNchips.paymentName}}</span><br>
+                <span class="copyable" onclick="copyText(this)">Phone: {{fishNchips.paymentNumber}}</span>
+            </div>
+            </i>
+            </i>
+            <i class="fas fa-university" title="Bank Transfer">
+              <div class="tooltip">
+                <span class="copyable" onclick="copyText(this)">Account Name:{{fishNchips.accountName}}</span><br>
+                <span class="copyable" onclick="copyText(this)">IBAN: {{fishNchips.accountNumber}}</span>
+            </div>
+            </i>
+            </i>
+            
+          </div>
+        </div>
+        <form method="post" action="{% url 'green_app:update_order' %}" enctype='multipart/form-data'>
+          {% csrf_token %}
+          <input type="hidden" name="grandTotal" value="{{ grandTotal }}">
+          <p><strong>Payment Method:</strong></p>
+          <input type="radio" name="paymentMethod" value="online" id="paymentOnline" required> Online Payment
+          <input type="radio" name="paymentMethod" value="COD" id="paymentCOD"> Cash On Delivery
+          <p><strong>Online payment Proof:</strong></p>
+          <input type="file" name="paymentProof" id="paymentProof">
+          
+          <button type="submit" class="purchase-button" id="submitButton">Submit</button>
+      </form>
+      <a href="{%url 'green_app:home' %}">
+      <button class="purchase-button" >Back To Home</button></a>
+      
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+            const paymentProofField = document.getElementById('paymentProof');
+        
+            function updatePaymentProofRequirement() {
+                const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+                
+                if (selectedPaymentMethod) {
+                    const isOnlinePayment = selectedPaymentMethod.value === 'online';
+                    paymentProofField.required = isOnlinePayment;
+                }
+            }
+        
+            // Attach change event listeners to payment method radios
+            paymentMethodRadios.forEach(radio => {
+                radio.addEventListener('change', updatePaymentProofRequirement);
+            });
+        
+            // Initialize the required state on page load
+            updatePaymentProofRequirement();
+        });
+        </script>
+        
+
+      </div>
+      
+    
+    </section>
+  </main>
+  
+  <script src="{% static 'checkout.js' %}"></script>
+  <script>
+    function copyText(element) {
+        const text = element.innerText.split(': ')[1]; // Extract the actual text (after the ": ")
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard: ' + text);
+        });
+    }
+</script>
+</body>
+{% endblock %}

@@ -1,0 +1,601 @@
+/* styles.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Raleway', sans-serif;
+}
+
+/* Prevent horizontal scrolling */
+html, body {
+  overflow-x: hidden;
+  font-family: 'Raleway', sans-serif;
+}
+.star-rating1 {
+  display: flex;
+  flex-direction: row;
+}
+
+.stars1 {
+  display: flex;
+  flex-direction: row;
+  margin-top: -40px;;
+}
+
+.star-label {
+  font-size: 2rem;
+  color: gray; /* Default star color */
+  cursor: default; /* Prevent pointer cursor on hover */
+  transition: color 0.3s;
+  position: relative;
+}
+
+.star-label.filled {
+  color: gold; /* Color of filled stars */
+}
+
+.star-label.half-filled::before {
+  content: '\2605'; /* Unicode for filled star */
+  color: gold;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Show half of the star */
+  overflow: hidden;
+}
+.ratings{
+  margin-top: 17%;
+  margin-left: 5%;
+}
+.breadcrumb {
+  font-size: 14px;
+  margin: 20px 20px;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #666;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.product-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 20px;
+}
+
+.product-content {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.product-images {
+  display: flex;
+  flex-direction: column;
+  margin-right: 40px; /* Increased gap */
+  max-width: 600px;
+  align-items: flex-start; /* Align images to the left */
+  margin-left: 20px; /* Move the images to the left */
+  margin-right: 180px;
+  
+}
+
+.product-images .main-image {
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Increased gap */
+  overflow: hidden; /* Ensure content fits within container */
+}
+
+.product-images .main-image img {
+  width: 80%;  /* Ensure image fits container width */
+  height: 100%; /* Ensure image fits container height */
+  object-fit: contain; /* Maintain aspect ratio, fit within container */
+}
+.product-images .thumb-images {
+  display: flex;
+  flex-wrap: wrap; /* Allows thumbnails to wrap to the next line if they overflow */
+  gap: 10px;
+  margin-left: 10%;
+  max-width: 400px; /* Set max-width equal to the main image width */
+  justify-content: center; /* Center thumbnails within the available space */
+}
+
+.product-images .thumb-images img {
+  width: 80px; /* Adjust thumbnail size to fit more images */
+  height: 80px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.product-details {
+  flex: 1;
+  max-width: 600px;
+}
+
+.product-details h1 {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.product-details .price {
+  font-size: 22px;
+  color: green;
+  margin-top: 5px;
+}
+
+.product-details .rating {
+  color: #555;
+  margin: 10px 0;
+}
+
+.product-details p {
+  color: #333;
+}
+
+.product-details label {
+  display: block;
+  margin-top: 20px;
+}
+
+.product-details select,
+.product-details input[type="number"] {
+  width: 50%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Wishlist button styles */
+.wishlist-btn {
+  display: flex;
+  align-items: center;
+  padding: 7px 20px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 3%;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Wishlist button hover effect */
+.wishlist-btn:hover {
+  background-color: #f8f8f8;
+  border: 2px solid green;
+}
+
+/* Heart icon */
+.wishlist-icon {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-color:red;
+  mask: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+  -webkit-mask: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  margin-right: 10px;
+  display: none;
+}
+
+/* Text next to the heart icon */
+.wishlist-text {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Change heart color on hover */
+.wishlist-btn:hover .wishlist-icon {
+  
+  background-color: rgb(117,158,76);
+  display: block;
+}
+
+
+.color-options,
+.gloss-options,
+.drainage-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.color-option,
+.gloss-option,
+.drainage-option {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.color-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-clip:content-box;
+}
+
+.color-option:hover,
+.gloss-option:hover,
+.drainage-option:hover {
+  border: 2px solid rgb(117,158,76);
+}
+
+.selected {
+  border: 2px solid rgb(117,158,76);
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.primary-btn {
+  flex: 1;
+  padding: 15px;
+  width:100%;
+  border: none;
+  border-radius: 5px;
+  background-color:  rgb(117,158,76);
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.primary-btn:hover{
+  background-color: rgb(117,158,76);
+  color:white;
+}
+.secondary-btn {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+.secondary-btn:hover{
+  border-color: rgb(117,158,76);
+  border:2px solid rgb(117,158,76);
+  color:rgb(117,158,76);
+  font-weight: bold;
+}
+.primary-btn:hover:hover {
+  opacity: 0.9;
+}
+.wishlist-btn a .primary-btn{
+  margin-top: 20px;;
+}
+.shipping-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
+
+.product-details details {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+.faq-section {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.faq-section h2, .faq-section h3 {
+  text-align: center;
+}
+
+.faq-section p {
+  text-align: center;
+  color: #666;
+}
+
+.faq {
+  margin-top: 20px;
+}
+
+.faq-question {
+  margin-bottom: 10px;
+}
+
+.faq-section .accordion {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.faq-section .panel {
+  padding: 15px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+  border-left: solid 1px #ddd;
+  border-right: solid 1px #ddd;
+  border-bottom: solid 1px #ddd;
+}
+
+.faq-section .accordion:after {
+  content: '\002B'; /* Unicode character for "plus" sign (+) */
+  font-size: 16px;
+  color: #777;
+}
+
+.faq-section .accordion.active:after {
+  content: "\2212"; /* Unicode character for "minus" sign (-) */
+}
+
+.still-have-questions {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+.still-have-questions button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Fixed Tooltip */
+.fixed-tooltip {
+  display: none;
+  position: fixed;
+  top: 60%;
+  right: 150px; /* Distance from the right edge */
+  transform: translateY(-50%);
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .product-content {
+      flex-direction: column;
+      align-items: flex-start; /* Align product content to the left */
+  }
+
+  .product-images {
+      width: 100%;
+      margin-right: 0;
+      align-items: flex-start; /* Align images to the left */
+      margin-left: -10px; /* Move the images to the left */
+      margin-bottom: 20px; /* Increased gap */
+  }
+
+  .product-images .main-image {
+      width: 100%;
+      height: 100%;
+      max-width: 400px; /* Align images to the left */
+      margin-bottom: 20px; /* Increased gap */
+      align-self: center;
+  }
+
+  .product-images .thumb-images {
+      flex-direction: row;
+      justify-content: flex-start; /* Align thumbnail images to the left */
+  }
+
+  .product-images .thumb-images img {
+      width: 75px;
+      height: 75px;
+  }
+
+  .product-details {
+      width: 90%;
+      margin-top: 20px;
+      margin-left: 10%;
+  }
+  .faq-section {
+      width: 90%;
+  }
+}
+
+/* REVIEWS*/
+/* Base Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.review-form {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center; /* Center align the content */
+  margin-top: 50px;;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.star-rating {
+  margin-bottom: 15px; /* Space below the star rating */
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.stars {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* Center the stars horizontally */
+  text-align: center;
+}
+
+.stars input {
+  display: none;
+}
+
+.stars label {
+  font-size: 2.5em;
+  color: #ddd; /* Default star color */
+  cursor: pointer;
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+/* Color all stars to the left of and including the hovered star */
+.stars label:hover,
+.stars label:hover ~ label {
+  color: #f0ad4e; /* Hover color */
+}
+
+/* Ensure color is applied to all stars to the left of and including the checked star */
+.stars input:checked ~ label {
+  color: #f0ad4e; /* Fill all stars including and to the left of the checked star */
+}
+
+/* Adjust the label's color when a star is checked */
+.stars input:checked + label {
+  color: #f0ad4e; /* Ensure the checked star itself is colored */
+}
+
+
+.submit-button {
+  background-color: rgb(117,158,76);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto; /* Center the submit button */
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.reviews-section {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.review-box {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-bottom: 15px;
+}
+
+.review-description {
+  margin: 0;
+}
+
+.review-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .review-form,
+  .reviews-section {
+      padding: 10px;
+  }
+
+  .form-group {
+      margin-bottom: 10px;
+  }
+}
+/* Reviews Section Styling */
+.reviews-section {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #f9f9f9;
+  text-align: center;
+  margin-top: 50px;
+}
+h3{
+  margin-bottom: 20px;
+}
+.review-box {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-description {
+  margin: 0 0 10px;
+  font-size: 1em;
+  line-height: 1.6;
+  color: #333;
+}
+
+.review-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .review-box {
+      padding: 10px;
+  }
+
+  .review-description {
+      font-size: 0.9em;
+  }
+}

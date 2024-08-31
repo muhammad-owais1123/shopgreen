@@ -1,0 +1,124 @@
+/* styles.css */
+*{
+
+  font-family: 'Raleway', sans-serif;
+}
+.checkout-container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Increased width for more responsiveness */
+  max-width: 1200px;
+  margin-top: 0px; /* Adjust for fixed navbar height */
+  gap: 20px; /* Better spacing between sections */
+  margin-bottom: 30px;
+  margin-right: 10px;
+}
+
+.shipping-details, .order-details {
+  flex: 1 1 45%; /* Flex-grow, flex-shrink, flex-basis */
+  margin: 20px;
+
+  align-items: center;
+}
+
+h1, h2 {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.section {
+  margin-bottom: 25px;
+}
+
+.payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.payment-icons i {
+  font-size: 20px; 
+  color:rgb(117,158,76);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.payment-icons i:hover {
+  color: #14a08e;
+}
+
+.purchase-button {
+  padding: 15px;
+  background-color: rgb(117,158,76);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header a {
+  text-decoration: none;
+  color: #17a589;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  flex-wrap: wrap;
+}
+
+.item img {
+  border-radius: 5px;
+}
+
+.item .details {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.summary {
+  padding: 20px 0px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.summary p {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px;
+  margin-right: 15px;
+}
+
+.gift-code-button {
+  padding: 10px 0;
+  background-color: rgb(117,158,76);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+}

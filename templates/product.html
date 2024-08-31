@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Product{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'product.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <script>
+        // Assuming prodInfos.0.product.name is available in the template context
+        const prodName = "{{ prodInfos.0.product.name|escapejs }}";
+        const addToWishlistUrl = "{% url 'green_app:addtowishlist' 'dummy_product_name' %}".replace('dummy_product_name', encodeURIComponent(prodName));
+        const cartUrl="{% url 'green_app:addtocart' 'dummy_product_name' %}".replace('dummy_product_name', encodeURIComponent(prodName));
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avgrating = parseFloat("{{ avgrating }}"); // Get the average rating from Django template
+            console.log('Average Rating:', avgrating); // Debugging statement
+            const stars = document.querySelectorAll('#star-rating1 .stars1 .star-label');
+            
+            stars.forEach(star => {
+                const starValue = parseFloat(star.getAttribute('data-value'));
+                console.log(`Star Value: ${starValue}, Avg Rating: ${avgrating}`); // Debugging statement
+                star.classList.remove('filled', 'half-filled'); // Reset classes
+                
+                if (avgrating >= starValue) {
+                    star.classList.add('filled');
+                } else if (avgrating > (starValue - 1) && avgrating < starValue) {
+                    star.classList.add('half-filled');
+                }
+            });
+        });
+        
+    </script>
+
+            <div class="product-content">
+            <!-- Product Images -->
+            <div class="product-images">
+                <div class="main-image">
+                    <img id="mainImage" src="{{prodInfos.0.image.url}}" alt="Product">
+                </div>
+                <div class="thumb-images">
+                    {% for productInfo in prodInfos %}
+                        <img class="thumb" src="{{ productInfo.image.url }}" alt="Thumbnail">
+                    {% endfor %}
+                </div>
+            </div>
+
+            
+            <!-- Product Details -->
+            <div class="product-details">
+                <h1 id="name">{{ prodInfos.0.product.name }}</h1>
+               
+                <p class="price" id="price">{{ prodInfos.0.price }}</p>
+               
+                <div class="form-group star-rating1" id="star-rating1">
+                    <div class="stars1">
+                        {% for i in "12345" %}
+                        <label class="star-label" for="star{{i}}" title="Rate {{i}} stars" data-value="{{i}}">
+                            &#9733;
+                        </label>
+                        {% endfor %}
+                        
+                        <div class="ratings" data-rating="3">{{prodInfos.0.product.rating}}/5</div>
+                    </div>
+
+                </div>
+
+                
+                <!-- Color Options -->
+                <label for="color-options">Available Colors:</label>
+                <div class="color-options" id="color-options" >
+                    {% for productInfo in prodInfos %}
+                    <button 
+                        class="color-option" 
+                        style="background-color: {{ productInfo.color.hex_code }}" 
+                        data-price="{{ productInfo.price }}" 
+                        data-image="{{ productInfo.image.url }}" 
+                        data-color="{{ productInfo.color.name }}"
+                        data-value="{{ productInfo.color.name }}"
+                        >
+                </button>
+                    {% endfor %}
+                </div>
+                <!-- Size option-->
+                <label for="gloss-options">Size:</label>
+                <p>W: {{prodInfos.0.product.width}} ,  H: {{prodInfos.0.product.height}} (Inches)</p>
+                <!-- Gloss Options -->
+                
+                <div class="gloss-options" id="gloss-options">
+                    <button class="gloss-option" id="low-gloss" data-value="Low">Low Gloss</button>
+                    <button class="gloss-option" id="high-gloss" data-value="High">High Gloss</button>
+                </div>
+                
+                <div id="fixedTooltip" style="display: none; position: absolute; background-color: #333; color: #fff; padding: 10px; border-radius: 3px;"></div>
+                <!-- Drainage Options -->
+                <label for="drainage-options">Drainage Options:</label>
+                <div class="drainage-options" id="drainage-options">
+                    {% if prodInfos.0.product.drainage == 'Yes' or prodInfos.0.product.drainage == 'yes'%}
+                        <button class="drainage-option" id="with-drainage" data-value="With Drainage">With Drainage Hole</button>
+                    {% elif prodInfos.0.product.drainage == 'No' or prodInfos.0.product.drainage == 'no'%}
+                        <button class="drainage-option" id="without-drainage" data-value="Without Drainage">Without Drainage Hole</button>
+                    {% elif prodInfos.0.product.drainage == 'Both' or prodInfos.0.product.drainage == 'both'%}
+                        <button class="drainage-option" id="with-drainage" data-value="With Drainage">With Drainage Hole</button>
+                        <button class="drainage-option" id="without-drainage" data-value="Without Drainage">Without Drainage Hole</button>            
+                    {%endif%}
+                </div>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" value="0" min="1" data-value="1">
+                
+                <form id="wishlistForm" method="post" action="{% url 'green_app:addtowishlist' prodInfos.0.product.name %}">
+                    {% csrf_token %}
+                    <button type="submit" class="wishlist-btn" aria-label="Add to Wishlist">
+                        <span class="wishlist-icon"></span>
+                        <span class="wishlist-text">Wishlist</span>
+                        
+                    </button>
+                </form>
+                    <a href="{% url 'green_app:addtocart' prodInfos.0.product.name %}" id="add-to-cart-link">
+                        <button id="add-to-cart" class="primary-btn">Add to Cart</button>
+                    </a>
+                   
+                
+                <details>
+                    <summary>Details</summary>
+                    <p>{{ prodInfos.0.product.description }}</p>
+
+                </details>
+                <details>
+                    <summary>Shipping</summary>
+                    <p><strong>1.</strong> We strive to provide a seamless shipping experience, with orders typically
+                        processed within 1 to 2 business days and shipped within 3 to 4 working
+                        days.</p>
+                    <p><strong>2.</strong> Shipping costs are calculated based on the order size, weight, and
+                        destination, and will be displayed at checkout</p>
+                    <p><strong>3.</strong> For Custom and Personalized orders , it may take between 1-2 weeks
+                        depending on type of order.</p>
+                </details>
+                <details>
+                    <summary>Warranty</summary>
+                    <p><strong>1.</strong> For damaged or incorrect items, notify us within 1 day to claim warranty.</p>
+                     <p><strong>2.</strong> Warranties do not cover damage from misuse or unnatural causes.</p>
+                      <p><strong>3.</strong> For large or custom orders, customer service will arrange advance payment to confirm authenticity.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+
+            <!-- REVIEWS PORTION-->
+    <div class="review-form">
+        
+     
+    <form method="post" enctype="multipart/form-data" action="{% url 'green_app:submit_review' prodInfos.0.product.name %}" class="review-form">
+        {% csrf_token %}
+    
+        <!-- 5-Star Rating -->
+        <h3>Write Comment:</h3>
+        <div class="stars">
+            {% for i in "54321" %}
+            <input type="radio" id="star{{i}}" name="ratings" value="{{i}}" 
+            {% if form.ratings.value|stringformat:"s" == i|stringformat:"s" %}checked{% endif %} />
+            <label for="star{{i}}" title="Rate {{i}} stars">&#9733;</label>
+            {% endfor %}
+        </div>
+        <div class="form-group star-rating" id="star-rating">
+        </div>
+        <!-- Textbox for Description -->
+        <div class="form-group">
+            <label for="id_description">{{ form.description.label }}</label>
+            <input type="text" name="description" id="id_description" 
+                   value="{{ form.description.value|default_if_none:'' }}" 
+                   placeholder="Enter your review here..." />
+        </div>
+    
+        <!-- Image Upload Option -->
+        <div class="form-group">
+            <label for="id_image">{{ form.image.label }}</label>
+            <input type="file" name="image" id="id_image" />
+        </div>
+    
+        <!-- Submit Button -->
+        <div class="form-group">
+            <input type="submit" value="Submit Review" class="submit-button">
+        </div>
+    </form>
+
+    <div class="reviews-section">
+        <h3>Comments Section</h3>
+        {% for re in reviews %}
+        {% if re.products.name == prodInfos.0.product.name %}
+        <div class="review-box">
+            <h3>{{re.profile.full_name}}</h3>
+            <p>Ratings: {{re.ratings}}/5</p>
+            <p class="review-description">Comments: {{ re.description }}</p>
+            {% if re.image %}
+                <img src="{{ re.image.url }}" alt="Review image" class="review-image">
+            {% endif %}
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+</div>
+
+            <!-- FAQ PORTION-->
+
+    <section class="faq-section">
+        <h2>FAQs</h2>
+        <p>Reach out for the Frequently Asked Questions.</p>
+        <div class="faq">
+            <div class="faq-question">
+                <button class="accordion">Do you offer custom design or personalized options?</button>
+                <div class="panel">
+                    <p>Yes, we offer custom design options and personalized for our planters at
+                        Shop Green. Connect with us on social media</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <button class="accordion">What are the care instructions for planters?</button>
+                <div class="panel">
+                    <p>Our planters are made to last and dont require much care.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <button class="accordion">Do you have whole sale and bulk purchasing options?</button>
+                <div class="panel">
+                    <p>Yes, we offer wholesale and bulk purchasing options for businesses, retailers
+                        and event planners.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <button class="accordion">What is the estimate delivery time for my order?</button>
+                <div class="panel">
+                    <p>Delivery time vary depending upon your locations and type of order placed.</p>
+                </div>
+            </div>
+            <!-- Add more FAQ questions as needed -->
+        </div>
+        <div class="still-have-questions">
+            <h3>Still have questions?</h3>
+            <p>Contact us on Whatsapp for more guidance.</p>
+            <a href="https://wa.me/03175101521"><button>Contact</button></a>
+            <style>
+                a button {
+                    color:white;
+                }
+
+                a button:hover{
+                    background-color:rgb(117,158,76);
+                    color:white;
+                }
+                
+            </style>
+        </div>
+    </section>
+   
+</main>
+<script src="{% static 'product.js' %}"></script>
+{% endblock %}
+

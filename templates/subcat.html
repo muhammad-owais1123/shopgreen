@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SubCategory{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'subcat.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+    <h1 class="heart">{{category.name}}</h1>
+    <style>
+        .heart {
+            position:relative;
+          margin-top: 0%;
+            transition: transform 1s ease-in-out; /* Smooth transition for the transform */
+            /* Initial state */
+            text-align: left;
+            color:rgb(117,158,76)
+
+        }
+        .heart.active {
+            transform: translateX(42%); /* Transformed state */
+        }
+        @media (max-width:600px) {
+            .heart.active {
+            transform: translateX(30%); /* Transformed state */
+        }
+        }
+        
+    </style>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const heading = document.querySelector('.heart');
+
+    // Create an Intersection Observer instance
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add the 'active' class when the heading is in view
+                entry.target.classList.add('active');
+                // Optionally, unobserve the element after animation
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.9 // Adjust this value if needed
+    });
+
+    // Start observing the heading element
+    observer.observe(heading);
+});
+</script>
+<!-- products -->
+<div class="product-section mt-150 mb-150">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-filters">
+                    <ul>
+                        {% for sub in subcategories %}
+                        <li class="filter-link {% if forloop.first %}active{% endif %}" data-subcategory-id="{{ sub.id }}">
+                            {{ sub.name }}
+                        </li>
+                        {% empty %}
+                        <li>No subcategories available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter button -->
+        <div class="filter-button">
+            <button class="btn btn-primary" data-toggle="collapse" data-target="#filterOptions">Filter</button>
+            <div id="filterOptions" class="collapse">
+                <div class="filter-content">
+                    <h5>Price Range</h5>
+                    <input type="range" min="0" max="100000" class="slider" id="priceRange" value="100000">
+                    <p>Price: Rs <span id="priceValue">0</span></p>
+
+                    <h5>Size Options</h5>
+                    <div class="size-options">
+                        <div class="size-option">
+                            <label for="width">Width:</label>
+                            <input type="number" id="width" class="form-control" placeholder="Inches">
+                        </div>
+                        <div class="size-option">
+                            <label for="height">Height:</label>
+                            <input type="number" id="height" class="form-control" placeholder="Inches">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-lists">
+          {% for sub in subcategories %}
+          {% for product_info in sub.unique_product_infos %}
+          <div class="single-product-item" 
+               data-subcategory-id="{{ sub.id }}"
+               data-price="{{ product_info.price }}" 
+               data-width="{{ product_info.product.width }}" 
+               data-height="{{ product_info.product.height }}">
+            <div class="product-image">
+                <a href="{% url 'green_app:productdetails' product_info.product.name %}"><img src="{{ product_info.image.url }}"  alt=""></a>
+            </div>
+            <h3>{{ product_info.product.name }}</h3>
+            <p class="product-price"><span>Rs</span> {{ product_info.price }}</p>
+            <a href="{% url 'green_app:productdetails' product_info.product.name %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Buy</a>
+          </div>
+          {% empty %}
+          {% endfor %}
+          {% endfor %}
+        </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterLinks = document.querySelectorAll('.filter-link');
+        const productItems = document.querySelectorAll('.single-product-item');
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+        const widthInput = document.getElementById('width');
+        const heightInput = document.getElementById('height');
+        
+        // Function to filter and show products
+        function filterProducts() {
+            const selectedSubcategoryId = document.querySelector('.filter-link.active').getAttribute('data-subcategory-id');
+            const maxPrice = parseFloat(priceRange.value);
+            const minWidth = parseFloat(widthInput.value) || 0;
+            const minHeight = parseFloat(heightInput.value) || 0;
+
+            productItems.forEach(item => {
+                const itemSubcategoryId = item.getAttribute('data-subcategory-id');
+                const itemPrice = parseFloat(item.getAttribute('data-price'));
+                const itemWidth = parseFloat(item.getAttribute('data-width'));
+                const itemHeight = parseFloat(item.getAttribute('data-height'));
+
+                const matchesSubcategory = itemSubcategoryId === selectedSubcategoryId;
+                const matchesPrice = itemPrice <= maxPrice || isNaN(maxPrice);  // Allow all prices if maxPrice is NaN
+                const matchesWidth = itemWidth >= minWidth || isNaN(minWidth);  // Allow all widths if minWidth is NaN
+                const matchesHeight = itemHeight >= minHeight || isNaN(minHeight);  // Allow all heights if minHeight is NaN
+
+                if (matchesSubcategory && matchesPrice && matchesWidth && matchesHeight) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Update price display
+        priceRange.addEventListener('input', function() {
+            priceValue.textContent = this.value;
+            filterProducts();
+        });
+
+        // Attach event listeners to filter links
+        filterLinks.forEach(link => {
+            link.addEventListener('mouseover', function() {
+                const subcategoryId = this.getAttribute('data-subcategory-id');
+                
+                // Remove 'active' class from all filter links
+                filterLinks.forEach(link => link.classList.remove('active'));
+                
+                // Add 'active' class to the hovered filter link
+                this.classList.add('active');
+                
+                // Filter products
+                filterProducts();
+            });
+        });
+
+        // Attach event listeners to size inputs
+        widthInput.addEventListener('input', filterProducts);
+        heightInput.addEventListener('input', filterProducts);
+
+        // Initialize price value
+        priceValue.textContent = priceRange.value;
+
+        // Show products for the default active subcategory on page load
+        filterProducts(); // Ensure all products of the default subcategory are displayed initially
+    });
+</script>
+
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+<!-- main js -->
+
+</body>
+{% endblock %}

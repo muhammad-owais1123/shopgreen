@@ -1,0 +1,211 @@
+/* Base Styles */
+body {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #fff;
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+html, body {
+  overflow-x: hidden;
+  font-family: 'Raleway', sans-serif;
+}
+
+main {
+  text-align: center;
+}
+
+main h1 {
+  display: inline-block;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.heart {
+  color: #555;
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.cart-button,
+.purchase-button,
+.remove-from-cart-button,
+.add-to-wishlist-button {
+  background: rgb(117,158,76);
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.cart-button:hover,
+.purchase-button:hover,
+.remove-from-cart-button:hover,
+.add-to-wishlist-button:hover {
+  background: #148f77;
+}
+
+.cancel-icon {
+  cursor: pointer;
+  color: red;
+  font-size: 1.2em;
+  margin-right: 60px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin: 20px 0;
+  overflow-x: auto; /* Add horizontal scroll if the table is too wide */
+}
+
+thead th {
+  background: #f5f5f5;
+  padding: 15px 10px;
+  text-align: left;
+  white-space: nowrap; /* Prevent text from wrapping in header cells */
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+tbody td img {
+  max-width: 60px;
+  margin-right: 10px;
+}
+
+tbody td span.original-price {
+  text-decoration: line-through;
+  color: #555;
+  margin-right: 5px;
+}
+
+tbody td span.discount-price {
+  color: #b12704;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+}
+
+.gift-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: flex; /* Enable flexbox for centering */
+    justify-content: center; /* Center the table within the container */
+  }
+
+  thead {
+    display: none; /* Hide table headers on small screens */
+  }
+
+  tbody tr {
+    display: block;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    background: #f9f9f9;
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+    text-align: left;
+    position: relative;
+    flex-wrap: nowrap; /* Prevent wrapping of content */
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 10px;
+    color: #333;
+    white-space: nowrap; /* Prevent label from wrapping */
+  }
+
+  tbody td img {
+    max-width: 50px;
+    margin-right: 10px;
+  }
+
+  .cart-button,
+  .purchase-button,
+  .remove-from-cart-button,
+  .add-to-wishlist-button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 15px;
+    display: block;
+  }
+
+  .cancel-icon {
+    margin-right: 20px;
+  }
+
+  .quantity-input {
+    width: 100%;
+  }
+
+  .gift-info {
+    font-size: 14px;
+  }
+}
+
+
+.purchase-button {
+  padding: 10px 0;
+  background-color: rgb(117,158,76);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+}

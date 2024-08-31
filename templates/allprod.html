@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AllProduct{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'allprod.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+    <!-- products -->
+    <div class="product-section mt-150 mb-150">
+        <div class="container">
+            <h2 class="newest">All Products</h2>
+            <style>
+                .newest {
+                    margin-top: -5%;
+                    transition: transform 1s ease-in-out;
+                    text-align: left;
+                    font-weight: normal;
+                    color: rgb(117,158,76);
+                }
+                .newest.active {
+                    transform: translateX(41%);
+                }
+                @media (max-width: 600px) {
+                    .newest.active {
+                        transform: translateX(25%);
+                    }
+                }
+            </style>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const heading = document.querySelector('.newest');
+                    const observer = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('active');
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {
+                        threshold: 0.9
+                    });
+                    observer.observe(heading);
+                });
+            </script>
+
+            <!-- Filter button -->
+            <div class="filter-button">
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#filterOptions">Filter</button>
+                <div id="filterOptions" class="collapse">
+                    <div class="filter-content">
+                        <h5>Price Range</h5>
+                        <input type="range" min="0" max="100000" class="slider" id="priceRange" value="100000">
+                        <p>Price: Rs <span id="priceValue">100000</span></p>
+
+                        <h5>Size Options</h5>
+                        <div class="size-options">
+                            <div class="size-option">
+                                <label for="width">Width:</label>
+                                <input type="number" id="width" class="form-control" placeholder="Inches">
+                            </div>
+                            <div class="size-option">
+                                <label for="height">Height:</label>
+                                <input type="number" id="height" class="form-control" placeholder="Inches">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row product-lists">
+                <!-- Product Items -->
+                {% for i in allprod %}
+                <div class="col-lg-4 col-md-6 col-sm-6 text-center strawberry">
+                    <div class="single-product-item"
+                        data-price="{{ i.price }}" 
+                        data-width="{{ i.product.width }}" 
+                        data-height="{{ i.product.height }}">
+                        <div class="product-image">
+                            <a href="{% url 'green_app:productdetails' i.product.name %}">
+                                <img src="{{ i.image.url }}" alt="">
+                            </a>
+                        </div>
+                        <h3>{{i.product.name}}</h3>
+                        <p class="product-price"><span>Rs</span> {{i.price}} </p>
+                        <a href="{% url 'green_app:productdetails' i.product.name %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Buy</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- end products -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceSlider = document.getElementById('priceRange');
+            const priceValue = document.getElementById('priceValue');
+            const widthInput = document.getElementById('width');
+            const heightInput = document.getElementById('height');
+
+            // Update price text on input change
+            priceSlider.oninput = function() {
+                priceValue.textContent = this.value;
+                filterProducts();
+            };
+
+            // Filter products based on user input
+            widthInput.addEventListener('input', filterProducts);
+            heightInput.addEventListener('input', filterProducts);
+
+            function filterProducts() {
+                const priceLimit = parseInt(priceSlider.value, 10);
+                const widthLimit = parseInt(widthInput.value, 10) || Infinity;
+                const heightLimit = parseInt(heightInput.value, 10) || Infinity;
+
+                document.querySelectorAll('.single-product-item').forEach(item => {
+                    const productPrice = parseInt(item.getAttribute('data-price'), 10);
+                    const productWidth = parseInt(item.getAttribute('data-width'), 10) || Infinity;
+                    const productHeight = parseInt(item.getAttribute('data-height'), 10) || Infinity;
+
+                    let isVisible = true;
+
+                    if (productPrice > priceLimit) {
+                        isVisible = false;
+                    }
+                    if (productWidth > widthLimit) {
+                        isVisible = false;
+                    }
+                    if (productHeight > heightLimit) {
+                        isVisible = false;
+                    }
+
+                    item.style.display = isVisible ? 'block' : 'none';
+                });
+            }
+
+            // Initialize filter on page load
+            filterProducts();
+        });
+    </script>
+
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <!-- main js -->
+</body>
+{% endblock %}

@@ -1,0 +1,201 @@
+/* styles.css */
+@import 'https://fonts.googleapis.com/css?family=Lora:400,400i,700|Raleway:300,600,700,900';
+@import 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css';
+*{
+
+    font-family: 'Raleway', sans-serif;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(42,48,34);
+    color:black !important;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, gray 0%, gray 50%);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.welcome-section, .form-section {
+    padding: 20px;
+    color: rgb(42,48,34);
+}
+
+.welcome-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding :100px;
+}
+
+.welcome-section .logo {
+    width: 50px;
+    height: 50px;
+    background: url('https://via.placeholder.com/50');
+    background-size: cover;
+    margin-bottom: 20px;
+}
+
+
+.learn-more-btn {
+    padding: 10px 20px;
+    background: #e94e77;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.learn-more-btn:hover {
+    background: #d43d62;
+}
+
+.form-section {
+    flex: 1;
+    background: rgb(158,189,119);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-section h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.input-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+.submit-btn {
+    padding: 10px 15px;
+    background-color:rgb(125, 179, 67);
+    color:  rgb(46, 78, 13);
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 70%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 18%;
+    font-size: medium;
+}
+
+.submit-btn:hover {
+    background-color:rgb(125, 179, 67);
+}
+
+.google-signin-btn {
+    
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    background: rgb(125, 179, 67);
+    color: rgb(46, 78, 13);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    
+    font-size: medium;
+    width: 70%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 18%;
+}
+.google-signin-btn a{
+    color:rgb(46, 78, 13);
+}
+.google-signin-btn:hover {
+    background: rgb(125, 179, 67);
+}
+
+.signup-option {
+    margin-top: 20px;
+    text-align: center;
+    color:black
+}
+
+.signup-option a {
+    font-weight: bold;
+    color: rgb(38, 64, 10);
+    text-decoration: none;
+}
+
+.signup-option a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        width: auto; /* Adjust width to fit smaller screens */
+        margin: 0 20px; /* Ensure some margin for smaller screens */
+    }
+
+    .welcome-section {
+        display: none;
+    }
+
+    .form-section {
+        width: 90%;
+        max-width: 400px;
+        margin: 20px 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-section h2 {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .input-group {
+        width: 80%;
+        margin-left: 4%;
+    }
+
+    .input-group input {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .submit-btn, .google-signin-btn {
+        padding: 10px;
+        font-size: 14px;
+        width: 63%;
+    }
+}

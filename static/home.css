@@ -1,0 +1,449 @@
+/* Global reset */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif;
+  }
+  
+  /* Prevent horizontal scrolling */
+  html, body {
+    overflow-x: hidden;
+    font-family: 'Raleway', sans-serif;
+    background-color: #fff;
+    
+    
+  }
+  
+  .search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+
+    border-color: green;
+  }
+  
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    margin: 0 auto; /* Center the wrapper */
+  }
+  
+  .search-wrapper input {
+    padding: 10px;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px; /* Rounded corners only on left side */
+    border-color: rgb(7, 70, 7);
+    height: 40px; /* Set a fixed height for the input */
+    box-sizing: border-box; /* Include padding in width calculation */
+    font-size: 16px; /* Ensure consistent font size */
+    line-height: 1.5; /* Ensure vertical alignment of text */
+  }
+  
+  .search-wrapper .search-icon {
+    background-color: rgb(7, 70, 7);;
+    border: 1px solid rgb(7, 70, 7);
+    color: #fff;
+    padding: 0 15px; /* Adjust padding for horizontal space */
+    border-radius: 0 5px 5px 0; /* Rounded corners only on right side */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px; /* Match height of the input */
+    box-sizing: border-box; /* Ensure proper sizing */
+    font-size: 16px; /* Ensure consistent icon size */
+    margin-left: -1px; /* To overlap the border between input and button */
+    line-height: 1; /* Align icon vertically */
+  }
+  
+  /* Media Query for smaller screens */
+  @media (max-width: 600px) {
+    .search-wrapper .search-icon {
+      display: none; /* Hide the search icon */
+    }
+  }
+  
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    justify-content: center;
+  }
+  
+  .image-card {
+    text-align: center;
+    flex: 1 1 calc(33.33% - 20px); /* Default to three items per row */
+    margin: 5px;
+  }
+  
+  .image-card img {
+    max-width: 100%;
+    border-radius: 5px;
+  }
+  
+  .image-card .caption {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .feature-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .feature-text {
+    width: 100%;
+  }
+  
+  .feature-text h4 {
+    font-size: 16px;
+    color: #888;
+    font-weight: bold;
+  }
+  
+  .feature-text h1 {
+    font-size: 42px;
+    margin: 10px 0;
+    font-weight: bold;
+
+  }
+  
+  .feature-text p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .feature-text .buttons button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 2px solid rgb(181, 227, 125);
+    background: white;
+    cursor: pointer;
+}
+
+.feature-text .buttons button:hover {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 2px solid rgb(123, 184, 49);
+    background: rgb(123, 184, 49);
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+
+}
+  .feature-images {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10% 0; /* Add padding on top and sides, no padding on bottom */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    gap: 10px; /* Add gap between images */
+  }
+  
+  .feature-images .medium-img {
+    width: 30%; /* Size for the larger image */
+    border-radius: 10px;
+  }
+  
+  .feature-images .small-img {
+    width: 20%; /* Size for the smaller image */
+    border-radius: 10px;
+  }
+  
+  /* Media query for tablets and larger screens */
+  @media (min-width: 1025px) {
+    .image-card {
+      flex: 1 1 calc(16.66% - 20px); /* Six items per row on larger screens */
+    }
+  }
+  
+  /* Media query for tablets and laptops */
+  @media (max-width: 1024px) {
+    .feature-section {
+      flex-direction: column;
+    }
+  }
+  
+  /* Media query for tablets and phones */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav ul {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+  
+    nav ul li a {
+      font-size: 16px;
+    }
+    
+    .logo {
+      margin-bottom: 10px;
+    }
+    .search-section {
+      margin: 20px;
+    }
+    
+    .search-section input {
+      padding: 8px;
+      width: calc(100% - 40px); /* Reduced width with margins */
+      max-width: 100%;
+      margin: 0 auto; /* Center the search bar */
+    }
+  
+    .search-section input {
+      margin-bottom: 20px;
+    }
+    .feature-images .medium-img {
+      width: 80%;
+    }
+  
+    .feature-images .small-img {
+      width: 50%;
+      position: relative;
+      bottom: 0;
+      left: 0;
+      margin-top: 10px;
+    }
+  
+    /* Adjust the image grid to show three images per row */
+    .image-card {
+      flex: 1 1 calc(33.33% - 20px); /* Three items per row */
+      margin: 5px;
+    }
+  }
+  
+  /* Newest Arrivals */
+  .newest-arrivals {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .newest-arrivals h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+
+    font-weight: bold;
+  }
+  /* Slider */
+  .slider {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .slide {
+    display: flex;
+    flex: 1 0 auto; /* Ensures each slide takes up the full width for its content */
+  }
+  
+  /* Default to four cards per slide */
+  .card {
+    flex: 1 1 calc(25% - 20px); /* Four items per slide on larger screens */
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Media query for tablets and phones */
+  @media (max-width: 768px) {
+    .card {
+      flex: 1 1 calc(33.33% - 20px); /* Three items per slide on smaller screens */
+    }
+  
+    .slide {
+      width: 100%; /* Ensures each slide takes up the full width of the slider */
+    }
+  }
+  
+  
+  .card img {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .card a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #000;
+  }
+  /* About Us */
+  .about-us {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  
+  .about-us-container {
+    border: 1px solid #888;
+    padding: 30px; /* Increased padding */
+    max-width: 800px; /* Increased width */
+    text-align: center;
+  }
+  
+  .about-us h4 {
+    font-size: 16px;
+    color: #888;
+    font-weight: bold;
+  }
+  
+  .about-us h1 {
+    font-size: 33px;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .about-us p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+  /* General styles */
+  .subscribe-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px; /* Standard padding */
+    padding-top: 0; /* Adjust padding to align with about us section */
+    padding-bottom: 90px; /* Bottom padding for spacing */
+  }
+  
+  .subscribe-container {
+    border: 1px solid #888;
+    padding: 30px; /* Increased padding */
+    max-width: 800px; /* Same width as about us container */
+    text-align: center;
+  }
+  
+  .subscribe-container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight:300;
+  }
+  
+  .email-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between input and button */
+  }
+  
+  .email-form input[type="email"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1; /* Allow input to take available space */
+    box-sizing: border-box;
+  }
+  
+  .email-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Responsive styles (matching about-us section) */
+  @media (max-width: 1200px) {
+    .subscribe-section {
+      padding: 20px; /* Ensure consistent padding */
+      padding-top: 0; /* Align with about us section */
+      padding-bottom: 60px; /* Adjust bottom padding */
+    }
+  
+    .subscribe-container {
+      padding: 30px; /* Ensure consistent padding */
+      max-width: 800px; /* Ensure consistent max-width */
+    }
+  
+    .subscribe-container h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+  
+    .email-form {
+      flex-direction: row; /* Same as about us section */
+      gap: 10px;
+    }
+  
+    .email-form input[type="email"] {
+      width: auto; /* Adjust to fit within container */
+      font-size: 14px;
+    }
+  
+    .email-form button {
+      width: auto; /* Adjust to fit within container */
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .subscribe-section {
+      padding: 15px; /* Adjust padding for smaller screens */
+      padding-top: 0; /* Align with about us section */
+      padding-bottom: 40px; /* Adjust bottom padding */
+    }
+  
+    .subscribe-container {
+      padding: 15px; /* Ensure consistent padding */
+      max-width: 100%; /* Full width for small screens */
+    }
+  
+    .subscribe-container h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  
+    .email-form {
+      flex-direction: column; /* Stack input and button vertically */
+      gap: 10px;
+    }
+  
+    .email-form input[type="email"] {
+      width: 100%; /* Full width for small screens */
+      font-size: 14px;
+    }
+  
+    .email-form button {
+      width: 100%; /* Full width for small screens */
+      font-size: 14px;
+    }
+  }
+  
+  

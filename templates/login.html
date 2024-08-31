@@ -1,0 +1,100 @@
+<!-- index.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <style>
+                .welcome-section 
+                {
+                    background-image: 
+                        url('media/IMG-20240827-WA0018 (4).png'); /* Background image */
+                    background-size: cover; /* Ensures the image covers the entire section */
+                    background-position: center; /* Centers the background image */
+                    background-repeat: no-repeat; /* Prevents the image from repeating */
+                    background-blend-mode: lighten; /* Lightens the background image */
+                    color: black; /* Makes the text color black for better contrast */
+                    text-align: center; /* Centers the text horizontally */
+                    padding: 50px; /* Adds padding for better text spacing */
+                }
+
+                .welcome-section h1, .welcome-section p {
+                    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* Adds a subtle light shadow to the text */
+                }
+            </style>
+            <h1 class="g">ShopGreen</h1>
+            <style>
+                
+                .g{
+                    margin-top: 180px;
+                    margin-bottom: 140px;
+                    margin-left: 100px;;
+                }
+                .f{
+                    font-weight: bold;
+                    color:rgb(46, 78, 13)
+                }
+            </style>
+            <p class="f">Shop Green is an online destination dedicated to enhancing your space with
+                nature's touch.</p>
+        </div>
+        <div class="form-section">
+            <h1>Sign In</h1>
+            <style>
+                h1{
+                    color:rgb(46, 78, 13);
+                }
+            </style>
+            <form method="POST">
+                {% if messages %}
+                    <div class="messages">
+                        <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+            
+                <div class="input-group">
+                    {{form.username.label}}
+                    {{form.username}}
+                </div>
+                <div class="input-group">
+                    {{form.password.label}}
+                    {{form.password}}
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+                <button type="button" class="google-signin-btn">
+                    <a href="#">Sign in with Google</a>
+                    </button>
+                <div class="signup-option">
+                    <span>Create an account? <a href="{% url 'green_app:signup'%}">Sign Up</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                var messages = document.querySelector('.messages');
+                if (messages) {
+                    messages.style.opacity = '0'; // Fade out
+                    setTimeout(function() {
+                        messages.style.display = 'none'; // Remove from display after fade out
+                    }, 100); // Wait for fade-out effect before removing
+                }
+            }, 2000); // Dismiss after 2 seconds
+        };
+    </script>
+    <script src="{% static 'login.js' %}"></script>
+</body>
+</html>
